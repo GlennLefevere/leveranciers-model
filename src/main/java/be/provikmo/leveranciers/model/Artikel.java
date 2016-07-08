@@ -46,6 +46,21 @@ public class Artikel extends EntityObject {
 		this.omschrijving = omschrijving;
 	}
 
+	/**
+	 * @return the levArts
+	 */
+	public List<LevArt> getLevArts() {
+		return levArts;
+	}
+
+	/**
+	 * @param levArts
+	 *            the levArts to set
+	 */
+	public void setLevArts(List<LevArt> levArts) {
+		this.levArts = levArts;
+	}
+
 	public void addLeverancier(Leverancier leverancier) {
 		LevArt la = new LevArt();
 		la.setArtikel(this);
