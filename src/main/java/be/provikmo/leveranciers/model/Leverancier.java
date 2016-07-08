@@ -58,7 +58,8 @@ public class Leverancier extends EntityObject {
 	// @Cascade(CascadeType.REFRESH)
 	// private List<Artikel> artikels = new ArrayList<>();
 
-	@OneToMany(cascade = javax.persistence.CascadeType.ALL, mappedBy = "leverancier")
+	@OneToMany(mappedBy = "leverancier",orphanRemoval= true)
+	@Cascade(CascadeType.ALL)
 	private List<LevArt> levArts = new ArrayList<>();
 
 	/**
