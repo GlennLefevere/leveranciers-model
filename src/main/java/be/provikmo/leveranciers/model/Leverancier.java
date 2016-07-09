@@ -38,17 +38,19 @@ public class Leverancier extends EntityObject {
 
 	@ManyToOne
 	@JoinColumn(name = "IDLAND")
+	@Cascade(CascadeType.ALL)
 	@JsonInclude
 	private Land land;
 
 	@ManyToOne
 	@JoinColumn(name = "IDPOSTCODE")
-	@Cascade(CascadeType.SAVE_UPDATE)
+	@Cascade(CascadeType.ALL)
 	@JsonInclude
 	private Gemeente gemeente;
 
 	@ManyToOne
 	@JoinColumn(name = "IDPROVINCIE")
+	@Cascade(CascadeType.ALL)
 	@JsonInclude
 	private Provincie provincie;
 
