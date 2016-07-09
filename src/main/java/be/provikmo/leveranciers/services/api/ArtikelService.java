@@ -5,12 +5,15 @@ package be.provikmo.leveranciers.services.api;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import be.provikmo.leveranciers.model.Artikel;
 
 /**
  * @author Glenn Lefevere
  *
  */
+@Service
 public interface ArtikelService {
 
 	Artikel findById(Long id);

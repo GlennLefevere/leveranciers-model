@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 public class Leverancier extends EntityObject {
 
 	private String naam;
-	private String straat;
 	private String telefoon;
 	private String fax;
 	private String email;
@@ -54,21 +53,6 @@ public class Leverancier extends EntityObject {
 	 */
 	public void setNaam(String naam) {
 		this.naam = naam;
-	}
-
-	/**
-	 * @return the straat
-	 */
-	public String getStraat() {
-		return straat;
-	}
-
-	/**
-	 * @param straat
-	 *            the straat to set
-	 */
-	public void setStraat(String straat) {
-		this.straat = straat;
 	}
 
 	/**
@@ -174,6 +158,14 @@ public class Leverancier extends EntityObject {
 	 */
 	public void setWebshop(Boolean webshop) {
 		this.webshop = webshop;
+	}
+	
+	public Adres getAdres() {
+		return adres;
+	}
+	
+	public void setAdres(Adres adres) {
+		this.adres = adres;
 	}
 
 	/**
