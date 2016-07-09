@@ -6,16 +6,14 @@ package be.provikmo.leveranciers.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 /**
@@ -35,30 +33,9 @@ public class Leverancier extends EntityObject {
 	private Double latitude = new Double(0);
 	private Double longitude = new Double(0);
 	private Boolean webshop;
-
-	@ManyToOne
-	@JoinColumn(name = "IDLAND")
-	@Cascade(CascadeType.ALL)
-	@JsonInclude
-	private Land land;
-
-	@ManyToOne
-	@JoinColumn(name = "IDPOSTCODE")
-	@Cascade(CascadeType.ALL)
-	@JsonInclude
-	private Gemeente gemeente;
-
-	@ManyToOne
-	@JoinColumn(name = "IDPROVINCIE")
-	@Cascade(CascadeType.ALL)
-	@JsonInclude
-	private Provincie provincie;
-
-	// @ManyToMany(fetch = FetchType.LAZY)
-	// @JoinTable(name = "LEVART", joinColumns = { @JoinColumn(name = "IDLEV", nullable = false, updatable = false) },
-	// inverseJoinColumns = { @JoinColumn(name = "IDART", nullable = false, updatable = true) })
-	// @Cascade(CascadeType.REFRESH)
-	// private List<Artikel> artikels = new ArrayList<>();
+	
+	@Embedded
+	private Adres adres;
 
 	@OneToMany(mappedBy = "leverancier",orphanRemoval= true)
 	@Cascade(CascadeType.ALL)
@@ -197,51 +174,6 @@ public class Leverancier extends EntityObject {
 	 */
 	public void setWebshop(Boolean webshop) {
 		this.webshop = webshop;
-	}
-
-	/**
-	 * @return the land
-	 */
-	public Land getLand() {
-		return land;
-	}
-
-	/**
-	 * @param land
-	 *            the land to set
-	 */
-	public void setLand(Land land) {
-		this.land = land;
-	}
-
-	/**
-	 * @return the gemeente
-	 */
-	public Gemeente getGemeente() {
-		return gemeente;
-	}
-
-	/**
-	 * @param gemeente
-	 *            the gemeente to set
-	 */
-	public void setGemeente(Gemeente gemeente) {
-		this.gemeente = gemeente;
-	}
-
-	/**
-	 * @return the provincie
-	 */
-	public Provincie getProvincie() {
-		return provincie;
-	}
-
-	/**
-	 * @param provincie
-	 *            the provincie to set
-	 */
-	public void setProvincie(Provincie provincie) {
-		this.provincie = provincie;
 	}
 
 	/**
