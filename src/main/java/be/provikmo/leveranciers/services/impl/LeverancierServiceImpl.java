@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import be.provikmo.leveranciers.model.Artikel;
 import be.provikmo.leveranciers.model.Leverancier;
 import be.provikmo.leveranciers.model.Leverancier_;
 import be.provikmo.leveranciers.repositories.LeveranciersRepository;
@@ -73,6 +74,13 @@ public class LeverancierServiceImpl implements LeverancierService {
 
 	public List<Leverancier> findByNaam(String query) {
 		return leveranciersRepository.findByNaam(query);
+	}
+
+	public void addArtikelToLeverancier(Long id, Artikel artikel) {
+		Leverancier leverancier = leveranciersRepository.findOne(id);
+		leverancier.addArtikel(artikel);
+		leveranciersRepository.save(leverancier);
+
 	}
 
 }

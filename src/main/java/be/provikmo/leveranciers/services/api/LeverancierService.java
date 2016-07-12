@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import be.provikmo.leveranciers.model.Artikel;
 import be.provikmo.leveranciers.model.Leverancier;
 
 /**
@@ -25,4 +26,6 @@ public interface LeverancierService {
 	Leverancier findByIdJoinArtikel(Long id);
 
 	List<Leverancier> findByNaam(String query);
+
+	void addArtikelToLeverancier(Long id, Artikel artikel);
 }

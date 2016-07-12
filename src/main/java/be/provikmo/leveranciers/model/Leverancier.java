@@ -13,15 +13,13 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * @author Glenn Lefevere
  *
  */
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class, property = "id")
 public class Leverancier extends EntityObject {
 
 	private String naam;
@@ -32,11 +30,12 @@ public class Leverancier extends EntityObject {
 	private Double latitude = new Double(0);
 	private Double longitude = new Double(0);
 	private Boolean webshop;
-	
+
 	@Embedded
 	private Adres adres;
 
-	@OneToMany(mappedBy = "leverancier",orphanRemoval= true)
+	@JsonManagedReference("lev-levart")
+	@OneToMany(mappedBy = "leverancier", orphanRemoval = false)
 	@Cascade(CascadeType.ALL)
 	private List<LevArt> levArts = new ArrayList<>();
 
@@ -159,11 +158,11 @@ public class Leverancier extends EntityObject {
 	public void setWebshop(Boolean webshop) {
 		this.webshop = webshop;
 	}
-	
+
 	public Adres getAdres() {
 		return adres;
 	}
-	
+
 	public void setAdres(Adres adres) {
 		this.adres = adres;
 	}
@@ -189,27 +188,5 @@ public class Leverancier extends EntityObject {
 		la.setLeverancier(this);
 		this.levArts.add(la);
 	}
-
-	// /**
-	// * @return the artikels
-	// */
-	// public List<Artikel> getArtikels() {
-	// return artikels;
-	// }
-	//
-	// /**
-	// * @param artikels
-	// * the artikels to set
-	// */
-	// public void setArtikels(List<Artikel> artikels) {
-	// this.artikels = artikels;
-	// }
-	//
-	// public void addArtikel(Artikel artikel) {
-	// artikels.add(artikel);
-	// if (CollectionUtils.isEmpty(artikel.getLeveranciers()) || !artikel.getLeveranciers().contains(this)) {
-	// artikel.addLeverancier(this);
-	// }
-	// }
 
 }

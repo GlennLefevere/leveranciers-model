@@ -3,9 +3,12 @@
  */
 package be.provikmo.leveranciers.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * @author Glenn Lefevere
@@ -14,11 +17,13 @@ import javax.persistence.ManyToOne;
 @Entity
 public class LevArt extends EntityObject {
 
+	@JsonBackReference("lev-levart")
 	@ManyToOne
 	@JoinColumn(name = "LEVERANCIER_ID")
 	private Leverancier leverancier;
 
-	@ManyToOne
+	@JsonBackReference("atikel-levart")
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "ARTIKEL_ID")
 	private Artikel artikel;
 
