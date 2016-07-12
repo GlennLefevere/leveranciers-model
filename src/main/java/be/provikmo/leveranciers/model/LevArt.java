@@ -17,12 +17,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 public class LevArt extends EntityObject {
 
-	@JsonBackReference("lev-levart")
 	@ManyToOne
 	@JoinColumn(name = "LEVERANCIER_ID")
 	private Leverancier leverancier;
 
-	@JsonBackReference("atikel-levart")
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "ARTIKEL_ID")
 	private Artikel artikel;
@@ -30,6 +28,7 @@ public class LevArt extends EntityObject {
 	/**
 	 * @return the leverancier
 	 */
+	@JsonBackReference
 	public Leverancier getLeverancier() {
 		return leverancier;
 	}

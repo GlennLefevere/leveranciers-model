@@ -11,9 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 /**
  * @author Glenn Lefevere
  *
@@ -23,9 +20,7 @@ public class Artikel extends EntityObject {
 
 	private String omschrijving;
 
-	@JsonManagedReference("atikel-levart")
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "artikel", fetch = FetchType.LAZY, orphanRemoval = false)
-	@JsonIgnore
 	private List<LevArt> levArts = new ArrayList<>();
 
 	/**

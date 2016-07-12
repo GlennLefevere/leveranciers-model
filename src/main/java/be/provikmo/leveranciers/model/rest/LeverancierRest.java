@@ -1,26 +1,20 @@
 /**
  * (c) 2016 ADMB. All rights reserved.
  */
-package be.provikmo.leveranciers.model;
+package be.provikmo.leveranciers.model.rest;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import be.provikmo.leveranciers.model.Adres;
+import be.provikmo.leveranciers.model.Artikel;
 
 /**
  * @author Glenn Lefevere
  *
  */
-@Entity
-public class Leverancier extends EntityObject {
+public class LeverancierRest {
+	private Long id;
 
 	private String naam;
 	private String telefoon;
@@ -31,12 +25,24 @@ public class Leverancier extends EntityObject {
 	private Double longitude = new Double(0);
 	private Boolean webshop;
 
-	@Embedded
 	private Adres adres;
 
-	@OneToMany(mappedBy = "leverancier", orphanRemoval = false)
-	@Cascade(CascadeType.ALL)
-	private List<LevArt> levArts = new ArrayList<>();
+	private List<Artikel> artikels = new ArrayList<>();
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id
+	 *            the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the naam
@@ -158,35 +164,34 @@ public class Leverancier extends EntityObject {
 		this.webshop = webshop;
 	}
 
+	/**
+	 * @return the adres
+	 */
 	public Adres getAdres() {
 		return adres;
 	}
 
+	/**
+	 * @param adres
+	 *            the adres to set
+	 */
 	public void setAdres(Adres adres) {
 		this.adres = adres;
 	}
 
 	/**
-	 * @return the levArts
+	 * @return the artikels
 	 */
-	@JsonManagedReference
-	public List<LevArt> getLevArts() {
-		return levArts;
+	public List<Artikel> getArtikels() {
+		return artikels;
 	}
 
 	/**
-	 * @param levArts
-	 *            the levArts to set
+	 * @param artikels
+	 *            the artikels to set
 	 */
-	public void setLevArts(List<LevArt> levArts) {
-		this.levArts = levArts;
-	}
-
-	public void addArtikel(Artikel artikel) {
-		LevArt la = new LevArt();
-		la.setArtikel(artikel);
-		la.setLeverancier(this);
-		this.levArts.add(la);
+	public void setArtikels(List<Artikel> artikels) {
+		this.artikels = artikels;
 	}
 
 }
