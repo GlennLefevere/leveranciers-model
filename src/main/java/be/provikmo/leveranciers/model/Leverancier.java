@@ -6,14 +6,13 @@ package be.provikmo.leveranciers.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  * @author Glenn Lefevere
@@ -34,9 +33,10 @@ public class Leverancier extends EntityObject {
 	@Embedded
 	private Adres adres;
 
-	@OneToMany(mappedBy = "leverancier", orphanRemoval = false)
-	@Cascade(CascadeType.ALL)
-	private List<LevArt> levArts = new ArrayList<>();
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinTable(name = "LEVART", joinColumns = { @JoinColumn(name = "IDLEV", nullable = false, updatable = false) },
+		inverseJoinColumns = { @JoinColumn(name = "IDART", nullable = false, updatable = true) })
+	private List<Artikel> artikels;
 
 	/**
 	 * @return the naam
@@ -167,26 +167,27 @@ public class Leverancier extends EntityObject {
 	}
 
 	/**
-	 * @return the levArts
+	 * @return the artikels
 	 */
-	@JsonManagedReference
-	public List<LevArt> getLevArts() {
-		return levArts;
+	public List<Artikel> getArtikels() {
+		return artikels;
 	}
 
 	/**
-	 * @param levArts
-	 *            the levArts to set
+	 * @param artikels
+	 *            the artikels to set
 	 */
-	public void setLevArts(List<LevArt> levArts) {
-		this.levArts = levArts;
+	public void setArtikels(List<Artikel> artikels) {
+		this.artikels = artikels;
 	}
 
 	public void addArtikel(Artikel artikel) {
-		LevArt la = new LevArt();
-		la.setArtikel(artikel);
-		la.setLeverancier(this);
-		this.levArts.add(la);
+		if (this.artikels == null) {
+			this.artikels = new ArrayList<>();
+		}
+		this.artikels.add(artikel);
+		if (artikel.getLeveranciers() != null && !artikel.getLeveranciers().contains(this)) {
+			artikel.getLeveranciers().add(this);
+		}
 	}
-
 }

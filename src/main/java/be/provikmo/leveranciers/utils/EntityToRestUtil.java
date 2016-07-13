@@ -4,12 +4,10 @@
 package be.provikmo.leveranciers.utils;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import org.springframework.util.CollectionUtils;
 
 import be.provikmo.leveranciers.model.Artikel;
-import be.provikmo.leveranciers.model.LevArt;
 import be.provikmo.leveranciers.model.Leverancier;
 import be.provikmo.leveranciers.model.rest.ArtikelRest;
 import be.provikmo.leveranciers.model.rest.LeverancierRest;
@@ -38,13 +36,10 @@ public final class EntityToRestUtil {
 
 		result.setAdres(leverancier.getAdres());
 
-		if (!CollectionUtils.isEmpty(leverancier.getLevArts())) {
-			result.setArtikels(leverancier.getLevArts().stream()
-				.filter(la -> la.getArtikel() != null)
-				.map(LevArt::getArtikel)
-				.collect(Collectors.toList()));
+		if (!CollectionUtils.isEmpty(leverancier.getArtikels())) {
+			leverancier.getArtikels().forEach(a -> a.setLeveranciers(new ArrayList<>()));
 
-			result.getArtikels().forEach(a -> a.setLevArts(new ArrayList<>()));
+			result.setArtikels(leverancier.getArtikels());
 		}
 
 		return result;
@@ -57,13 +52,10 @@ public final class EntityToRestUtil {
 
 		result.setOmschrijving(artikel.getOmschrijving());
 
-		if (!CollectionUtils.isEmpty(artikel.getLevArts())) {
-			result.setLeveranciers(artikel.getLevArts().stream()
-				.filter(la -> la.getLeverancier() != null)
-				.map(LevArt::getLeverancier)
-				.collect(Collectors.toList()));
+		if (!CollectionUtils.isEmpty(artikel.getLeveranciers())) {
+			artikel.getLeveranciers().forEach(l -> l.setArtikels(new ArrayList<>()));
 
-			result.getLeveranciers().forEach(la -> la.setLevArts(new ArrayList<>()));
+			result.setLeveranciers(artikel.getLeveranciers());
 		}
 
 		return result;

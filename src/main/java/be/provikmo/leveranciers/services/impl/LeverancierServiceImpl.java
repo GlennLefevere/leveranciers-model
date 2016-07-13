@@ -55,7 +55,7 @@ public class LeverancierServiceImpl implements LeverancierService {
 		CriteriaQuery<Leverancier> cq = cb.createQuery(Leverancier.class).distinct(true);
 		Root<Leverancier> root = cq.from(Leverancier.class);
 
-		root.fetch(Leverancier_.levArts, JoinType.INNER);
+		root.fetch(Leverancier_.artikels, JoinType.LEFT);
 
 		cq.where(cb.equal(root.get(Leverancier_.id), id));
 

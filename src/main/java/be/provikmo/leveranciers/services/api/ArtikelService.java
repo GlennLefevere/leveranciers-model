@@ -24,7 +24,9 @@ public interface ArtikelService {
 
 	Artikel save(Artikel artikel);
 
+	List<Artikel> save(List<Artikel> artikels);
+
 	Artikel findByIdJoinLeveranciers(Long id);
-	
+
 	List<Artikel> findByOmschrijving(String query);
 }

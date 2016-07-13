@@ -50,7 +50,7 @@ public class ArtikelServiceImpl implements ArtikelService {
 		CriteriaQuery<Artikel> cq = cb.createQuery(Artikel.class).distinct(true);
 		Root<Artikel> root = cq.from(Artikel.class);
 
-		root.fetch(Artikel_.levArts, JoinType.LEFT);
+		root.fetch(Artikel_.leveranciers, JoinType.LEFT);
 
 		cq.select(root);
 
@@ -88,9 +88,15 @@ public class ArtikelServiceImpl implements ArtikelService {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Artikel> cq = cb.createQuery(Artikel.class).distinct(true);
 		Root<Artikel> root = cq.from(Artikel.class);
-		
+
 		cq.where(cb.like(cb.upper(root.get(Artikel_.omschrijving)), "%" + query + "%"));
-		
+
 		return em.createQuery(cq).getResultList();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public List<Artikel> save(List<Artikel> artikels) {
+		return artikelRepository.save(artikels);
 	}
 }

@@ -3,13 +3,14 @@
  */
 package be.provikmo.leveranciers.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  * @author Glenn Lefevere
@@ -20,8 +21,10 @@ public class Artikel extends EntityObject {
 
 	private String omschrijving;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "artikel", fetch = FetchType.LAZY, orphanRemoval = false)
-	private List<LevArt> levArts = new ArrayList<>();
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JoinTable(name = "LEVART", joinColumns = { @JoinColumn(name = "IDART", nullable = false, updatable = false) },
+		inverseJoinColumns = { @JoinColumn(name = "IDLEV", nullable = false, updatable = true) })
+	private List<Leverancier> leveranciers;
 
 	/**
 	 * @return the omschrijving
@@ -39,25 +42,25 @@ public class Artikel extends EntityObject {
 	}
 
 	/**
-	 * @return the levArts
+	 * @return the leveranciers
 	 */
-	public List<LevArt> getLevArts() {
-		return levArts;
+	public List<Leverancier> getLeveranciers() {
+		return leveranciers;
 	}
 
 	/**
-	 * @param levArts
-	 *            the levArts to set
+	 * @param leveranciers
+	 *            the leveranciers to set
 	 */
-	public void setLevArts(List<LevArt> levArts) {
-		this.levArts = levArts;
+	public void setLeveranciers(List<Leverancier> leveranciers) {
+		this.leveranciers = leveranciers;
 	}
 
 	public void addLeverancier(Leverancier leverancier) {
-		LevArt la = new LevArt();
-		la.setArtikel(this);
-		la.setLeverancier(leverancier);
-		this.levArts.add(la);
+		this.leveranciers.add(leverancier);
+		if (leverancier.getArtikels() != null && !leverancier.getArtikels().contains(this)) {
+			leverancier.getArtikels().add(this);
+		}
 	}
 
 }
