@@ -1,0 +1,1 @@
+select tekst from md_i18n where sleutel = :sleutel and locale_id = :locale
