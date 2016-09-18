@@ -6,37 +6,67 @@ package be.provikmo.leveranciers.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Glenn Lefevere
  *
  */
 @Entity
-public class Leverancier extends EntityObject {
+@Table(name = "LEVERANCIERS")
+public class Leverancier extends AuditableEntity {
+	private static final long serialVersionUID = 1L;
 
 	private String naam;
+
+	@Column(name = "ADRES")
+	private String straat;
+
 	private String telefoon;
+
 	private String fax;
+
 	private String email;
+
+	private long prof = 0;
+
+	@Column(name = "WWW")
 	private String website;
+
 	private Double latitude = new Double(0);
 	private Double longitude = new Double(0);
+
 	private Boolean webshop;
 
-	@Embedded
-	private Adres adres;
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "LEVART", joinColumns = { @JoinColumn(name = "IDLEV", nullable = false, updatable = false) },
 		inverseJoinColumns = { @JoinColumn(name = "IDART", nullable = false, updatable = true) })
-	private List<Artikel> artikels;
+	private List<Artikel> artikels = new ArrayList<>();
+
+	@ManyToOne
+	@JoinColumn(name = "IDLAND")
+	private Land land;
+
+	@ManyToOne
+	@JoinColumn(name = "IDPOSTCODE")
+	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+	private Gemeente gemeente;
+
+	@ManyToOne
+	@JoinColumn(name = "IDPROVINCIE")
+	private Provincie provincie;
 
 	/**
 	 * @return the naam
@@ -51,6 +81,21 @@ public class Leverancier extends EntityObject {
 	 */
 	public void setNaam(String naam) {
 		this.naam = naam;
+	}
+
+	/**
+	 * @return the straat
+	 */
+	public String getStraat() {
+		return straat;
+	}
+
+	/**
+	 * @param straat
+	 *            the straat to set
+	 */
+	public void setStraat(String straat) {
+		this.straat = straat;
 	}
 
 	/**
@@ -96,6 +141,21 @@ public class Leverancier extends EntityObject {
 	 */
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	/**
+	 * @return the prof
+	 */
+	public long getProf() {
+		return prof;
+	}
+
+	/**
+	 * @param prof
+	 *            the prof to set
+	 */
+	public void setProf(long prof) {
+		this.prof = prof;
 	}
 
 	/**
@@ -158,14 +218,6 @@ public class Leverancier extends EntityObject {
 		this.webshop = webshop;
 	}
 
-	public Adres getAdres() {
-		return adres;
-	}
-
-	public void setAdres(Adres adres) {
-		this.adres = adres;
-	}
-
 	/**
 	 * @return the artikels
 	 */
@@ -181,13 +233,49 @@ public class Leverancier extends EntityObject {
 		this.artikels = artikels;
 	}
 
-	public void addArtikel(Artikel artikel) {
-		if (this.artikels == null) {
-			this.artikels = new ArrayList<>();
-		}
-		this.artikels.add(artikel);
-		if (artikel.getLeveranciers() != null && !artikel.getLeveranciers().contains(this)) {
-			artikel.getLeveranciers().add(this);
-		}
+	/**
+	 * @return the land
+	 */
+	public Land getLand() {
+		return land;
 	}
+
+	/**
+	 * @param land
+	 *            the land to set
+	 */
+	public void setLand(Land land) {
+		this.land = land;
+	}
+
+	/**
+	 * @return the gemeente
+	 */
+	public Gemeente getGemeente() {
+		return gemeente;
+	}
+
+	/**
+	 * @param gemeente
+	 *            the gemeente to set
+	 */
+	public void setGemeente(Gemeente gemeente) {
+		this.gemeente = gemeente;
+	}
+
+	/**
+	 * @return the provincie
+	 */
+	public Provincie getProvincie() {
+		return provincie;
+	}
+
+	/**
+	 * @param provincie
+	 *            the provincie to set
+	 */
+	public void setProvincie(Provincie provincie) {
+		this.provincie = provincie;
+	}
+
 }

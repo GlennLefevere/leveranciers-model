@@ -6,7 +6,6 @@ package be.provikmo.leveranciers.model.rest;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.provikmo.leveranciers.model.Adres;
 import be.provikmo.leveranciers.model.Artikel;
 
 /**
@@ -24,8 +23,6 @@ public class LeverancierRest {
 	private Double latitude = new Double(0);
 	private Double longitude = new Double(0);
 	private Boolean webshop;
-
-	private Adres adres;
 
 	private List<Artikel> artikels = new ArrayList<>();
 
@@ -162,21 +159,6 @@ public class LeverancierRest {
 	 */
 	public void setWebshop(Boolean webshop) {
 		this.webshop = webshop;
-	}
-
-	/**
-	 * @return the adres
-	 */
-	public Adres getAdres() {
-		return adres;
-	}
-
-	/**
-	 * @param adres
-	 *            the adres to set
-	 */
-	public void setAdres(Adres adres) {
-		this.adres = adres;
 	}
 
 	/**

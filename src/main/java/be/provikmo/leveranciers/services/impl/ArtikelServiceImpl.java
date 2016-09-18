@@ -37,7 +37,7 @@ public class ArtikelServiceImpl implements ArtikelService {
 	@Autowired
 	private ArtikelRepository artikelRepository;
 
-	public Artikel findById(Long id) {
+	public Artikel findById(String id) {
 		return artikelRepository.findOne(id);
 	}
 
@@ -60,7 +60,7 @@ public class ArtikelServiceImpl implements ArtikelService {
 		return results;
 	}
 
-	public Artikel findByIdJoinLeveranciers(Long id) {
+	public Artikel findByIdJoinLeveranciers(String id) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Artikel> cq = cb.createQuery(Artikel.class).distinct(true);
 		Root<Artikel> root = cq.from(Artikel.class);

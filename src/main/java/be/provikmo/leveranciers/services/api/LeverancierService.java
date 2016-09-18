@@ -19,13 +19,13 @@ public interface LeverancierService {
 
 	List<Leverancier> findAll();
 
-	Leverancier findById(Long id);
+	Leverancier findById(String id);
 
 	Leverancier save(Leverancier leverancier);
 
-	Leverancier findByIdJoinArtikel(Long id);
+	Leverancier findByIdJoinArtikel(String id);
 
 	List<Leverancier> findByNaam(String query);
 
-	void addArtikelToLeverancier(Long id, Artikel artikel);
+	void addArtikelToLeverancier(String id, Artikel artikel);
 }

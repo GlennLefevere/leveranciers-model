@@ -3,6 +3,7 @@
  */
 package be.provikmo.leveranciers.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,20 +12,28 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author Glenn Lefevere
  *
  */
 @Entity
-public class Artikel extends EntityObject {
+@Table(name = "ARTIKELS")
+public class Artikel extends AuditableEntity {
+	private static final long serialVersionUID = 1L;
 
 	private String omschrijving;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "LEVART", joinColumns = { @JoinColumn(name = "IDART", nullable = false, updatable = false) },
 		inverseJoinColumns = { @JoinColumn(name = "IDLEV", nullable = false, updatable = true) })
-	private List<Leverancier> leveranciers;
+	@OrderBy("naam ASC")
+	private List<Leverancier> leveranciers = new ArrayList<>();
 
 	/**
 	 * @return the omschrijving
@@ -58,9 +67,7 @@ public class Artikel extends EntityObject {
 
 	public void addLeverancier(Leverancier leverancier) {
 		this.leveranciers.add(leverancier);
-		if (leverancier.getArtikels() != null && !leverancier.getArtikels().contains(this)) {
-			leverancier.getArtikels().add(this);
-		}
+		leverancier.getArtikels().add(this);
 	}
 
 }

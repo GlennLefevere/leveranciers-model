@@ -16,7 +16,7 @@ import be.provikmo.leveranciers.model.Artikel;
 @Service
 public interface ArtikelService {
 
-	Artikel findById(Long id);
+	Artikel findById(String id);
 
 	List<Artikel> findAll();
 
@@ -26,7 +26,7 @@ public interface ArtikelService {
 
 	List<Artikel> save(List<Artikel> artikels);
 
-	Artikel findByIdJoinLeveranciers(Long id);
+	Artikel findByIdJoinLeveranciers(String id);
 
 	List<Artikel> findByOmschrijving(String query);
 }

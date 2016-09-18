@@ -13,5 +13,5 @@ import be.provikmo.leveranciers.model.Artikel;
  *
  */
 @Service
-public interface ArtikelRepository extends JpaRepository<Artikel, Long> {
+public interface ArtikelRepository extends JpaRepository<Artikel, String> {
 }

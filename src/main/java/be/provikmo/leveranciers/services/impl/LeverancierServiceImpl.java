@@ -39,18 +39,31 @@ public class LeverancierServiceImpl implements LeverancierService {
 	private LeveranciersRepository leveranciersRepository;
 
 	public List<Leverancier> findAll() {
-		return leveranciersRepository.findAll();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Leverancier> cq = cb.createQuery(Leverancier.class).distinct(true);
+		Root<Leverancier> root = cq.from(Leverancier.class);
+
+		cq.orderBy(cb.asc(root.get(Leverancier_.naam)));
+
+		cq.select(root);
+
+		TypedQuery<Leverancier> query = em.createQuery(cq);
+
+		return query.getResultList();
 	}
 
-	public Leverancier findById(Long id) {
+	public Leverancier findById(String id) {
 		return leveranciersRepository.findOne(id);
 	}
 
 	public Leverancier save(Leverancier leverancier) {
-		return leveranciersRepository.save(leverancier);
+		em.persist(leverancier);
+		em.flush();
+
+		return leverancier;
 	}
 
-	public Leverancier findByIdJoinArtikel(Long id) {
+	public Leverancier findByIdJoinArtikel(String id) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Leverancier> cq = cb.createQuery(Leverancier.class).distinct(true);
 		Root<Leverancier> root = cq.from(Leverancier.class);
@@ -72,14 +85,28 @@ public class LeverancierServiceImpl implements LeverancierService {
 		return result;
 	}
 
-	public List<Leverancier> findByNaam(String query) {
-		return leveranciersRepository.findByNaam(query);
+	public Leverancier update(Leverancier leverancier) {
+		return leveranciersRepository.saveAndFlush(leverancier);
 	}
 
-	public void addArtikelToLeverancier(Long id, Artikel artikel) {
-		Leverancier leverancier = leveranciersRepository.findOne(id);
-		leverancier.addArtikel(artikel);
-		leveranciersRepository.save(leverancier);
+	public List<Leverancier> findByNaam(String filter) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Leverancier> cq = cb.createQuery(Leverancier.class).distinct(true);
+		Root<Leverancier> root = cq.from(Leverancier.class);
+
+		cq.where(cb.like(root.get(Leverancier_.naam), "%" + filter + "%"));
+
+		cq.orderBy(cb.asc(root.get(Leverancier_.naam)));
+
+		TypedQuery<Leverancier> query = em.createQuery(cq);
+
+		return query.getResultList();
+	}
+
+	public void addArtikelToLeverancier(String id, Artikel artikel) {
+		Leverancier leverancier = findByIdJoinArtikel(id);
+		leverancier.getArtikels().add(artikel);
+		update(leverancier);
 
 	}
 

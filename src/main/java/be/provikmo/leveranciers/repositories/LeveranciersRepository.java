@@ -16,7 +16,7 @@ import be.provikmo.leveranciers.model.Leverancier;
  *
  */
 @Service
-public interface LeveranciersRepository extends JpaRepository<Leverancier, Long> {
+public interface LeveranciersRepository extends JpaRepository<Leverancier, String> {
 
 	@Query("select l from Leverancier l where UPPER(l.naam) like %?1%")
 		List<Leverancier> findByNaam(String naam);
